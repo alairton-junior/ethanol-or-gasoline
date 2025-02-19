@@ -4,8 +4,8 @@ export type GasStationDatabase = {
     id: number
     name: string
     created_at: string
-    ethanolValue: number
-    gasolineValue: number
+    ethanol_value: number
+    gasoline_value: number
 }
 
 export function useGasStationDatabase() {
@@ -13,13 +13,13 @@ export function useGasStationDatabase() {
 
     async function create(data: Omit<GasStationDatabase, "id" | "created_at">) {
         const statement = await database.prepareAsync(
-            `INSERT INTO gas_stations (name, ethanol_value, gasoline_value) VALUES ($name, $ethanolValue, $gasolineValue)`
+            `INSERT INTO gas_stations (name, ethanol_value, gasoline_value) VALUES ($name, $ethanol_value, $gasoline_value)`
         )
         try {
             const result = await statement.executeAsync({
                 $name: data.name,
-                $ethanolValue: data.ethanolValue,
-                $gasolineValue: data.gasolineValue
+                $ethanol_value: data.ethanol_value,
+                $gasoline_value: data.gasoline_value
             })
 
             const insertedRowId = result.lastInsertRowId.toLocaleString()

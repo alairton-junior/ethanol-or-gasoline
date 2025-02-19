@@ -19,24 +19,24 @@ import GasStationElement from '@/components/GasStationElement';
 
 export default function Index() {
     const [name, setName] = useState("");
-    const [ethanolValue, setEthanolValue] = useState("");
-    const [gasolineValue, setGasolineValue] = useState("");
+    const [ethanol_value, setEthanolValue] = useState("");
+    const [gasoline_value, setGasolineValue] = useState("");
     const [gasStation, setGasStation] = useState<GasStationDatabase[]>([]);
     const gasStationDatabase = useGasStationDatabase();
 
     async function create() {
         try {
-            if (isNaN(Number(ethanolValue))) {
+            if (isNaN(Number(ethanol_value))) {
                 return Alert.alert("O valor do álcool precisa ser um número!");
             }
-            if (isNaN(Number(gasolineValue))) {
+            if (isNaN(Number(gasoline_value))) {
                 return Alert.alert("O valor da gasolina precisa ser um número!");
             }
 
             const response = await gasStationDatabase.create({
                 name, 
-                ethanolValue: Number(ethanolValue), 
-                gasolineValue: Number(gasolineValue)
+                ethanol_value: Number(ethanol_value), 
+                gasoline_value: Number(gasoline_value)
             });
 
             Alert.alert("Produto cadastrado com o ID: " + response.insertedRowId);
@@ -75,8 +75,8 @@ export default function Index() {
         
                 <View style={styles.form}>
                     <Input placeholder='Nome do Posto' onChangeText={setName} value={name} />
-                    <Input placeholder='Preço da Gasolina (R$)' onChangeText={setGasolineValue} value={gasolineValue} keyboardType="numeric" />
-                    <Input placeholder='Preço do Álcool (R$)' onChangeText={setEthanolValue} value={ethanolValue} keyboardType="numeric" />
+                    <Input placeholder='Preço da Gasolina (R$)' onChangeText={setGasolineValue} value={gasoline_value} keyboardType="numeric" />
+                    <Input placeholder='Preço do Álcool (R$)' onChangeText={setEthanolValue} value={ethanol_value} keyboardType="numeric" />
                     
                     <Button title='Salvar' onPress={create} />
                 </View>
@@ -88,8 +88,8 @@ export default function Index() {
                         <GasStationElement
                             id={item.id}
                             name={item.name}
-                            ethanolValue={item.ethanolValue}
-                            gasolineValue={item.gasolineValue}
+                            ethanol_value={item.ethanol_value}
+                            gasoline_value={item.gasoline_value}
                             created_at={item.created_at}
                         />
                     )}

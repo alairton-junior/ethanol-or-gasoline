@@ -1,4 +1,5 @@
 import { Input } from '@/components/Input';
+import Switch from '@/components/Switch';
 import { useState, useEffect } from 'react';
 import { 
     View, 
@@ -80,6 +81,8 @@ export default function Index() {
                     
                     <Button title='Salvar' onPress={create} />
                 </View>
+
+                <Switch/>
 
                 <FlatList
                     data={gasStation}

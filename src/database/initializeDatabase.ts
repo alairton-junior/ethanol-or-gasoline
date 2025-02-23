@@ -12,4 +12,8 @@ export async function initializeDatabase(database: SQLiteDatabase) {
             longitude REAL
         )
     `);
+
 } 
+
+
+

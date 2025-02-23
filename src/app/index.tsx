@@ -18,10 +18,6 @@ import Logo from "@/assets/logo.png";
 import { GasStationDatabase, useGasStationDatabase } from "@/database/useGasStationDatabase";
 import GasStationElement from '@/components/GasStationElement';
 
-import { I18n } from 'i18n-js';
-
-import i18n from '@/i18n'; // Importar a configuração de internacionalização
-
 export default function Index() {
     const [name, setName] = useState("");
     const [ethanol_value, setEthanolValue] = useState("");
@@ -32,20 +28,20 @@ export default function Index() {
     async function create() {
         try {
             if (isNaN(Number(ethanol_value))) {
-                return Alert.alert(i18n.t('alert_ethanol_number'));
+                return Alert.alert("O valor do álcool precisa ser um número!");
             }
             if (isNaN(Number(gasoline_value))) {
-                return Alert.alert(i18n.t('alert_gasoline_number'));
+                return Alert.alert("O valor da gasolina precisa ser um número!");
             }
-    
+
             const response = await gasStationDatabase.create({
                 name, 
                 ethanol_value: Number(ethanol_value), 
                 gasoline_value: Number(gasoline_value)
             });
-    
-            Alert.alert(i18n.t('alert_product_registered') + " " + response.insertedRowId);
-            list();
+
+            Alert.alert("Produto cadastrado com o ID: " + response.insertedRowId);
+            list(); // Atualiza a lista automaticamente após cadastrar
         } catch (error) {
             console.log(error);
         } finally {
@@ -77,31 +73,34 @@ export default function Index() {
                 <Image source={Logo} style={styles.logo} />
             </SafeAreaView>
             
-            <View style={styles.form}>
-                <Input placeholder={i18n.t('input_name_placeholder')} onChangeText={setName} value={name} />
-                <Input placeholder={i18n.t('input_gasoline_placeholder')} onChangeText={setGasolineValue} value={gasoline_value} keyboardType="numeric" />
-                <Input placeholder={i18n.t('input_ethanol_placeholder')} onChangeText={setEthanolValue} value={ethanol_value} keyboardType="numeric" />
-                <Button title={i18n.t('save_button')} onPress={create} />
-            </View>
-    
-            <Switch/>
-    
-            <FlatList
-                data={gasStation}
-                keyExtractor={(item) => String(item.id)}
-                renderItem={({ item }) => (
-                    <GasStationElement
-                        id={item.id}
-                        name={item.name}
-                        ethanol_value={item.ethanol_value}
-                        gasoline_value={item.gasoline_value}
-                        created_at={item.created_at}
-                    />
-                )}
-                style={styles.listContainer}
-                contentContainerStyle={{ paddingBottom: 20 }}
-                showsVerticalScrollIndicator={false}
-            />
+        
+                <View style={styles.form}>
+                    <Input placeholder='Nome do Posto' onChangeText={setName} value={name} />
+                    <Input placeholder='Preço da Gasolina (R$)' onChangeText={setGasolineValue} value={gasoline_value} keyboardType="numeric" />
+                    <Input placeholder='Preço do Álcool (R$)' onChangeText={setEthanolValue} value={ethanol_value} keyboardType="numeric" />
+                    
+                    <Button title='Salvar' onPress={create} />
+                </View>
+
+                <Switch/>
+
+                <FlatList
+                    data={gasStation}
+                    keyExtractor={(item) => String(item.id)}
+                    renderItem={({ item }) => (
+                        <GasStationElement
+                            id={item.id}
+                            name={item.name}
+                            ethanol_value={item.ethanol_value}
+                            gasoline_value={item.gasoline_value}
+                            created_at={item.created_at}
+                        />
+                    )}
+                    style={styles.listContainer}
+                    contentContainerStyle={{ paddingBottom: 20 }}
+                    showsVerticalScrollIndicator={false}
+                />
+            
         </KeyboardAvoidingView>
     );
 }

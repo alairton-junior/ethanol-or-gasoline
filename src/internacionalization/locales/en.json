@@ -1,0 +1,10 @@
+{
+    "app_name": "Ethanol or Gasoline",
+    "input_name_placeholder": "Gas Station Name",
+    "input_ethanol_placeholder": "Ethanol Price (R$)",
+    "input_gasoline_placeholder": "Gasoline Price (R$)",
+    "save_button": "Save",
+    "alert_ethanol_number": "The ethanol price must be a number!",
+    "alert_gasoline_number": "The gasoline price must be a number!",
+    "alert_product_registered": "Product registered with ID:"
+}  

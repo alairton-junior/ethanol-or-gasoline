@@ -1,3 +1,5 @@
+import '@/internacionalization/i18n'
+import { useTranslation } from 'react-i18next';
 import { Input } from '@/components/Input';
 import Switch from '@/components/Switch';
 import { useState, useEffect } from 'react';
@@ -18,12 +20,19 @@ import Logo from "@/assets/logo.png";
 import { GasStationDatabase, useGasStationDatabase } from "@/database/useGasStationDatabase";
 import GasStationElement from '@/components/GasStationElement';
 
+
 export default function Index() {
     const [name, setName] = useState("");
     const [ethanol_value, setEthanolValue] = useState("");
     const [gasoline_value, setGasolineValue] = useState("");
     const [gasStation, setGasStation] = useState<GasStationDatabase[]>([]);
     const gasStationDatabase = useGasStationDatabase();
+
+    const { t, i18n } = useTranslation();
+
+    // const changeLanguage = (lang) => {
+    //     i18n.changeLanguage(lang);
+    // };
 
     async function create() {
         try {
@@ -75,14 +84,12 @@ export default function Index() {
             
         
                 <View style={styles.form}>
-                    <Input placeholder='Nome do Posto' onChangeText={setName} value={name} />
+                    <Input placeholder={t('input_name_placeholder')} onChangeText={setName} value={name} />
                     <Input placeholder='Preço da Gasolina (R$)' onChangeText={setGasolineValue} value={gasoline_value} keyboardType="numeric" />
                     <Input placeholder='Preço do Álcool (R$)' onChangeText={setEthanolValue} value={ethanol_value} keyboardType="numeric" />
                     
                     <Button title='Salvar' onPress={create} />
                 </View>
-
-                <Switch/>
 
                 <FlatList
                     data={gasStation}

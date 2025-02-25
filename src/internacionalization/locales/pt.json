@@ -1,0 +1,10 @@
+{
+    "app_name": "Álcool ou Gasolina",
+    "input_name_placeholder": "Nome do Posto",
+    "input_ethanol_placeholder": "Preço do Álcool (R$)",
+    "input_gasoline_placeholder": "Preço da Gasolina (R$)",
+    "save_button": "Salvar",
+    "alert_ethanol_number": "O valor do álcool precisa ser um número!",
+    "alert_gasoline_number": "O valor da gasolina precisa ser um número!",
+    "alert_product_registered": "Produto cadastrado com o ID:"
+}

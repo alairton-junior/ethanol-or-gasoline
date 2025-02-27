@@ -44,6 +44,37 @@ export function useGasStationDatabase() {
             throw error;
         }
     }
+
+    async function update(id: number, data: Omit<GasStationDatabase, "id" | "created_at">) {
+        const statement = await database.prepareAsync(
+            `UPDATE gas_stations SET name = $name, ethanol_value = $ethanol_value, gasoline_value = $gasoline_value WHERE id = $id`
+        );
+        try {
+            await statement.executeAsync({
+                $id: id,
+                $name: data.name,
+                $ethanol_value: data.ethanol_value,
+                $gasoline_value: data.gasoline_value
+            });
+        } catch (error) {
+            throw error;
+        } finally {
+            await statement.finalizeAsync();
+        }
+    }
+
+    async function remove(id: number) {
+        const statement = await database.prepareAsync(
+            `DELETE FROM gas_stations WHERE id = $id`
+        );
+        try {
+            await statement.executeAsync({ $id: id });
+        } catch (error) {
+            throw error;
+        } finally {
+            await statement.finalizeAsync();
+        }
+    }
     
-    return { create, list }
+    return { create, list, update, remove }
 }

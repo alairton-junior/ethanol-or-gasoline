@@ -15,6 +15,7 @@ import {
     Image
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as RNLocalize from "react-native-localize";
 
 import Logo from "@/assets/logo.png"; 
 import { GasStationDatabase, useGasStationDatabase } from "@/database/useGasStationDatabase";
@@ -28,11 +29,13 @@ export default function Index() {
     const [gasStation, setGasStation] = useState<GasStationDatabase[]>([]);
     const gasStationDatabase = useGasStationDatabase();
 
-    const { t, i18n } = useTranslation();
 
-    // const changeLanguage = (lang) => {
-    //     i18n.changeLanguage(lang);
-    // };
+    const { t, i18n } = useTranslation();
+    
+    
+   
+
+    
 
     async function create() {
         try {

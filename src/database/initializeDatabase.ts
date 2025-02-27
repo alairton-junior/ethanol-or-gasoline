@@ -8,8 +8,8 @@ export async function initializeDatabase(database: SQLiteDatabase) {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             ethanol_value REAL NOT NULL,
             gasoline_value REAL NOT NULL,
-            latitude REAL,
-            longitude REAL
+            latitude TEXT,
+            longitude TEXT
         )
     `);
 

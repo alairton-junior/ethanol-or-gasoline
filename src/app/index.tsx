@@ -74,7 +74,7 @@ export default function Index() {
 
     useEffect(() => {
         list();
-    }, []);
+    }, [gasStation]);
 
     return (
         <KeyboardAvoidingView 

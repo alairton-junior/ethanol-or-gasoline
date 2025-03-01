@@ -1,10 +1,24 @@
 {
-    "app_name": "Álcool ou Gasolina",
+   "app_name": "Álcool ou Gasolina",
+    "title_switch": "Selecione o desempenho do carro em relação ao álcool:",
+    "list": "Lista de Postos de Gasolina",
     "input_name_placeholder": "Nome do Posto",
     "input_ethanol_placeholder": "Preço do Álcool (R$)",
     "input_gasoline_placeholder": "Preço da Gasolina (R$)",
     "save_button": "Salvar",
-    "alert_ethanol_number": "O valor do álcool precisa ser um número!",
-    "alert_gasoline_number": "O valor da gasolina precisa ser um número!",
-    "alert_product_registered": "Produto cadastrado com o ID:"
+    "alert_ethanol_number": "O preço do álcool deve ser um número!",
+    "alert_gasoline_number": "O preço da gasolina deve ser um número!",
+    "alert_product_registered": "Produto registrado com ID:",
+    "edit_button": "Editar",
+    "delete_button": "Excluir",
+    "ethanol_label": "Álcool",
+    "gasoline_label": "Gasolina",
+    "created_at_label": "Criado em",
+    "save_post": "Salvar Posto",
+    "cancel_button": "Cancelar",
+    "add_new_post": "Adicionar Novo Posto",
+    "information": "Informações",
+    "local_map": "Localização do Posto",
+    "gasoline_more_profitable": "Gasolina é mais rentável",
+    "ethanol_more_profitable": "Álcool é mais rentável"
 }

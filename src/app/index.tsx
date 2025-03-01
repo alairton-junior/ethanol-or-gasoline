@@ -1,18 +1,15 @@
 import '@/internacionalization/i18n'
 import { useTranslation } from 'react-i18next';
+import { Link, useRouter } from 'expo-router';
 import { Input } from '@/components/Input';
 import Switch from '@/components/Switch';
 import { useState, useEffect } from 'react';
 import { 
-    View, 
     StyleSheet, 
-    Button, 
-    Alert, 
     FlatList, 
-    KeyboardAvoidingView, 
-    Platform, 
-    ScrollView,
-    Image
+    Image,
+    Text, View,
+    useColorScheme
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as RNLocalize from "react-native-localize";
@@ -20,48 +17,28 @@ import * as RNLocalize from "react-native-localize";
 import Logo from "@/assets/logo.png"; 
 import { GasStationDatabase, useGasStationDatabase } from "@/database/useGasStationDatabase";
 import GasStationElement from '@/components/GasStationElement';
+import FloatingBubbleButton from '@/components/FloatingBubbleButton';
+import { Template } from '@/components/Template';
+import { darkTheme, lightTheme } from '@/theme/theme';
+
+
 
 
 export default function Index() {
-    const [name, setName] = useState("");
-    const [ethanol_value, setEthanolValue] = useState("");
-    const [gasoline_value, setGasolineValue] = useState("");
     const [gasStation, setGasStation] = useState<GasStationDatabase[]>([]);
     const gasStationDatabase = useGasStationDatabase();
 
-
-    const { t, i18n } = useTranslation();
-    
-    
-   
-
+    const router = useRouter();
+    const colorScheme = useColorScheme(); 
+    const theme = colorScheme === 'dark' ? darkTheme : lightTheme;
     
 
-    async function create() {
-        try {
-            if (isNaN(Number(ethanol_value))) {
-                return Alert.alert("O valor do álcool precisa ser um número!");
-            }
-            if (isNaN(Number(gasoline_value))) {
-                return Alert.alert("O valor da gasolina precisa ser um número!");
-            }
-
-            const response = await gasStationDatabase.create({
-                name, 
-                ethanol_value: Number(ethanol_value), 
-                gasoline_value: Number(gasoline_value)
-            });
-
-            Alert.alert("Produto cadastrado com o ID: " + response.insertedRowId);
-            list(); // Atualiza a lista automaticamente após cadastrar
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setName("");
-            setEthanolValue("");
-            setGasolineValue("");
-        }
+    const handleNavigationToAddGasStation = () => {
+        router.push('/addGasStation');
     }
+
+    const { t } = useTranslation();
+
 
     async function list() {
         try {
@@ -77,22 +54,17 @@ export default function Index() {
     }, [gasStation]);
 
     return (
-        <KeyboardAvoidingView 
-            style={styles.container} 
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-            <SafeAreaView style={styles.header}>
+        <Template>
+            <View style={{...styles.header, backgroundColor: theme.card}}>
                 <Image source={Logo} style={styles.logo} />
-            </SafeAreaView>
+            </View>
+            <FloatingBubbleButton onPress={ handleNavigationToAddGasStation}/>
             
-        
-                <View style={styles.form}>
-                    <Input placeholder={t('input_name_placeholder')} onChangeText={setName} value={name} />
-                    <Input placeholder='Preço da Gasolina (R$)' onChangeText={setGasolineValue} value={gasoline_value} keyboardType="numeric" />
-                    <Input placeholder='Preço do Álcool (R$)' onChangeText={setEthanolValue} value={ethanol_value} keyboardType="numeric" />
-                    
-                    <Button title='Salvar' onPress={create} />
-                </View>
+            <View style={{gap: 12, marginTop: 80}}>
+                <Text style={{...styles.text, color: theme.text}}>{t('title_switch')}</Text>
+                <Switch/>
+                <Text style={{...styles.text, color: theme.text}}>{t('list')}</Text>
+            </View>
 
                 <FlatList
                     data={gasStation}
@@ -104,6 +76,8 @@ export default function Index() {
                             ethanol_value={item.ethanol_value}
                             gasoline_value={item.gasoline_value}
                             created_at={item.created_at}
+                            latitude={item.latitude}
+                            longitude={item.longitude}
                         />
                     )}
                     style={styles.listContainer}
@@ -111,7 +85,7 @@ export default function Index() {
                     showsVerticalScrollIndicator={false}
                 />
             
-        </KeyboardAvoidingView>
+            </Template>
     );
 }
 
@@ -121,19 +95,12 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        height: 120,
-        backgroundColor: "#29292E",
+        height: 80,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
         paddingHorizontal: 24,
         zIndex: 10,
-    },
-    container: {
-        flex: 1,
-        backgroundColor: "#202024",
-        paddingTop: 140, // Ajuste para evitar sobreposição do header
-        paddingHorizontal: 16,
     },
     logo: {
         width: 216,
@@ -153,4 +120,8 @@ const styles = StyleSheet.create({
     listContainer: {
         width: "80%",
     },
+    text: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    }
 });

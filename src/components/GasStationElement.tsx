@@ -1,6 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Modal } from 'react-native';
 import { useGasStationDatabase, GasStationDatabase } from '@/database/useGasStationDatabase';
+import EthanolOrGasoline from './EthanolOrGasoline';
+import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export default function GasStationElement({ id, name, ethanol_value, gasoline_value, created_at }: GasStationDatabase) {
     const { update, remove } = useGasStationDatabase();
@@ -8,6 +11,14 @@ export default function GasStationElement({ id, name, ethanol_value, gasoline_va
     const [newName, setNewName] = useState(name);
     const [newEthanol, setNewEthanol] = useState(String(ethanol_value));
     const [newGasoline, setNewGasoline] = useState(String(gasoline_value));
+    const router = useRouter();
+
+    const { t } = useTranslation();
+
+    if (!created_at) return null;
+    
+    const date = new Date(created_at);
+    const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')} às ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 
     async function handleUpdate() {
         await update(id, {
@@ -21,39 +32,59 @@ export default function GasStationElement({ id, name, ethanol_value, gasoline_va
     async function handleDelete() {
         await remove(id);
     }
-
+  
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{name}</Text>
-            <Text style={styles.text}>Álcool: R$ {ethanol_value}</Text>
-            <Text style={styles.text}>Gasolina: R$ {gasoline_value}</Text>
-            {created_at && <Text style={styles.text}>Criado em: {created_at}</Text>}
-
-            {/* Botões de Editar e Excluir */}
+            {/*ts-ignore*/}
+            <TouchableOpacity onPress={() => router.navigate("/details/" + id)}> 
+                {/*ts-ignore*/}
+                <Text style={styles.title}>{name}</Text>
+                <Text style={styles.text}>{t('created_at_label')} {formattedDate}</Text>
+                <View style={styles.priceContainer}>
+                    <View style={styles.priceBox}>
+                        <Text style={styles.text}>{t('ethanol_label')}</Text>
+                        <Text style={styles.priceText}>R$ {ethanol_value.toFixed(2)}</Text>
+                    </View>
+                    <View style={styles.priceBox}>
+                        <Text style={styles.text}>{t('gasoline_label')}</Text>
+                        <Text style={styles.priceText}>R$ {gasoline_value.toFixed(2)}</Text>
+                    </View>
+                </View>
+                <EthanolOrGasoline ethanol_value={ethanol_value} gasoline_value={gasoline_value} />
+            </TouchableOpacity>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.editButton} onPress={() => setModalVisible(true)}>
-                    <Text style={styles.buttonText}>Editar</Text>
+                    <Text style={styles.buttonText}>{t('edit_button')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
-                    <Text style={styles.buttonText}>Excluir</Text>
+                    <Text style={styles.buttonText}>{t('delete_button')}</Text>
                 </TouchableOpacity>
             </View>
 
-            {/* Modal de Edição */}
             <Modal visible={modalVisible} animationType="slide" transparent>
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.title}>Editar Posto</Text>
-                        <TextInput style={styles.input} value={newName} onChangeText={setNewName} placeholder="Nome do posto" />
-                        <TextInput style={styles.input} value={newEthanol} onChangeText={setNewEthanol} placeholder="Preço do Álcool" keyboardType="numeric" />
-                        <TextInput style={styles.input} value={newGasoline} onChangeText={setNewGasoline} placeholder="Preço da Gasolina" keyboardType="numeric" />
-
-                        <TouchableOpacity style={styles.saveButton} onPress={handleUpdate}>
-                            <Text style={styles.buttonText}>Salvar</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.cancelButton} onPress={() => setModalVisible(false)}>
-                            <Text style={styles.buttonText}>Cancelar</Text>
-                        </TouchableOpacity>
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.modalTitle}>{t('edit_button')}</Text>
+                        <View style={styles.inputGroup}>
+                            <Text style={styles.label}>{t('input_name_placeholder')}</Text>
+                            <TextInput style={styles.input} value={newName} onChangeText={setNewName} placeholder="Digite o nome do posto" placeholderTextColor="#999" />
+                        </View>
+                        <View style={styles.inputGroup}>
+                            <Text style={styles.label}>{t('input_ethanol_placeholder')}</Text>
+                            <TextInput style={styles.input} value={newEthanol} onChangeText={setNewEthanol} placeholder="Digite o preço do álcool" keyboardType="numeric" placeholderTextColor="#999" />
+                        </View>
+                        <View style={styles.inputGroup}>
+                            <Text style={styles.label}>{t('input_gasoline_placeholder')}</Text>
+                            <TextInput style={styles.input} value={newGasoline} onChangeText={setNewGasoline} placeholder="Digite o preço da gasolina" keyboardType="numeric" placeholderTextColor="#999" />
+                        </View>
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity style={styles.saveButton} onPress={handleUpdate}>
+                                <Text style={styles.buttonText}>{t('save_button')}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.cancelButton} onPress={() => setModalVisible(false)}>
+                                <Text style={styles.buttonText}>{t('cancel_button')}</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
@@ -65,69 +96,106 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#29292E', 
         padding: 12,
-        gap: 4,
         borderRadius: 8,
-        color: '#C4C4CC',
-        marginBottom: 16
+        marginTop: 16
     },
     title: {
-        fontSize: 16,
+        fontSize: 22,
         fontWeight: 'bold',
         color: '#C4C4CC',
     },
     text: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#C4C4CC',
-    },    buttonContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
+    },
+    priceContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginVertical: 8,
+    },
+    priceBox: {
+        alignItems: 'center',
+    },
+    priceText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#C4C4CC',
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         marginTop: 10,
     },
     editButton: {
-        backgroundColor: "#4CAF50",
-        padding: 8,
-        borderRadius: 5,
+        flex: 1,
+        backgroundColor: '#4CAF50',
+        padding: 10,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginRight: 5,
     },
     deleteButton: {
-        backgroundColor: "#E53935",
-        padding: 8,
-        borderRadius: 5,
-    },
-    buttonText: {
-        color: "#FFF",
-        textAlign: "center",
-    },
-    modalContainer: {
         flex: 1,
+        backgroundColor: '#FF5733',
+        padding: 10,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginLeft: 5,
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
-    modalContent: {
-        backgroundColor: "#FFF",
+    modalContainer: {
+        width: "90%",
+        backgroundColor: "#fff",
+        borderRadius: 12,
         padding: 20,
-        borderRadius: 10,
-        width: "80%",
-        alignItems: "center",
+        elevation: 5,
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        textAlign: "center",
+        marginBottom: 15,
+    },
+    inputGroup: {
+        marginBottom: 10,
+    },
+    label: {
+        fontSize: 14,
+        fontWeight: "bold",
+        marginBottom: 4,
     },
     input: {
-        width: "100%",
-        borderBottomWidth: 1,
-        marginBottom: 10,
-        padding: 8,
+        height: 40,
+        borderColor: "#ccc",
+        borderWidth: 1,
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        backgroundColor: "#f9f9f9",
     },
     saveButton: {
+        flex: 1,
         backgroundColor: "#4CAF50",
         padding: 10,
-        borderRadius: 5,
-        marginTop: 10,
-        width: "100%",
+        borderRadius: 8,
+        alignItems: "center",
+        marginRight: 5,
     },
     cancelButton: {
-        backgroundColor: "#E53935",
+        flex: 1,
+        backgroundColor: "#FF5733",
         padding: 10,
-        borderRadius: 5,
-        marginTop: 10,
-        width: "100%",
+        borderRadius: 8,
+        alignItems: "center",
+        marginLeft: 5,
+    },
+    buttonText: {
+        color: "#fff",
+        fontSize: 16,
+        fontWeight: "bold",
     },
 });

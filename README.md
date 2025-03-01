@@ -19,9 +19,9 @@
 
 Confira o vídeo abaixo para ver o aplicativo em ação:
 
-[![Vídeo da Aplicação](/public/app.mp4)](https://github.com/alairton-junior/ethanol_or_gasoline/blob/main/public/app.mp4)
+[![Vídeo da Aplicação](/public/app.mp4)](https://github.com/alairton-junior/ethanol-or-gasoline/blob/main/public/app.mp4)
 
-*(Clique na imagem para assistir ao vídeo ou baixe o arquivo `app.mp4` no caminho `/public` do repositório.)*
+*(Clique para assistir ao vídeo ou baixe o arquivo `app.mp4` no caminho `/public` do repositório.)*
 
 ---
 
@@ -30,7 +30,6 @@ Confira o vídeo abaixo para ver o aplicativo em ação:
 - **React Native com Expo:** Para desenvolvimento multiplataforma (iOS e Android).
 - **TypeScript:** Para tipagem estática e maior segurança no código.
 - **SQLite:** Para armazenamento local de dados, como histórico de preços e postos.
-- **API de Geolocalização:** Para acessar a localização do usuário e exibir postos no mapa.
 - **Internacionalização (i18n):** Para suportar múltiplos idiomas.
 
 ---
@@ -38,8 +37,8 @@ Confira o vídeo abaixo para ver o aplicativo em ação:
 ## ✅ Critérios da Atividade
 
 - **CRUD:** Criar, Editar, Salvar e Excluir postos de gasolina e históricos de preços.
-- **Listagem de Postos:** Exibe uma lista de postos de gasolina com base na localização do usuário.
-- **Mapa Integrado:** Mostra a localização do usuário e postos de gasolina próximos.
+- **Listagem de Postos:** Exibe uma lista de postos de gasolina
+- **Mapa Integrado:** Mostra a localização do usuário
 - **Internacionalização:** Suporte a Português e Inglês.
 
 ---
@@ -48,41 +47,23 @@ Confira o vídeo abaixo para ver o aplicativo em ação:
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/seu-usuario/gasolina-ou-alcool.git
+   git clone https://github.com/alairton-junior/ethanol-or-gasoline.git
    ```
 
 2. **Instale as dependências:**
    ```bash
-   cd gasolina-ou-alcool
+   cd ethanol-or-gasoline
    npm install
    ```
 
 3. **Execute o projeto:**
    ```bash
-   expo start
+   npm run start
    ```
 
 4. **Escaneie o QR Code:** Use o aplicativo Expo Go no seu smartphone para testar o app.
 
----
-
-## 📝 Contribuição
-
-Contribuições são bem-vindas! Siga os passos abaixo:
-
-1. Faça um fork do projeto.
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`).
-3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`).
-4. Push para a branch (`git push origin feature/nova-feature`).
-5. Abra um Pull Request.
 
 ---
 
-## 📄 Licença
-
-Este projeto está licenciado sob a MIT License. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-Feito com ❤️ por [Seu Nome](https://github.com/seu-usuario).  
-Se tiver alguma dúvida ou sugestão, sinta-se à vontade para abrir uma issue! 🚀
+Feito com ❤️ por Alairton Junior, Jamyle Layla e Bruno Alejandro
